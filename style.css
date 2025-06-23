@@ -1,0 +1,1272 @@
+:root {
+    --primary-color: #C0A062; /* Muted Gold */
+    --secondary-color: #E6D2A8; /* Light Cream/Gold */
+    --accent-color: #FFD700; /* Bright Gold */
+    --background-color: #111111; /* Near Black */
+    --text-color: #EAEAEA; /* Off-white */
+    --card-bg: #1C1C1C; /* Dark Grey */
+    --shadow-color: rgba(0, 0, 0, 0.4);
+    --gold-glow: rgba(192, 160, 98, 0.15);
+    --teal-color: #008080;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+header {
+    background: var(--background-color);
+    color: white;
+    text-align: center;
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid var(--primary-color);
+}
+
+header h1 {
+    margin: 0.5rem 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+header p {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--secondary-color);
+}
+
+.logo {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 0.5rem;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    background-color: #161616;
+    box-shadow: 0 2px 5px var(--shadow-color);
+    padding: 0.5rem;
+}
+
+nav button {
+    background-color: transparent;
+    border: none;
+    color: var(--secondary-color);
+    padding: 0.8rem 1.5rem;
+    margin: 0 0.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+}
+
+nav button:hover {
+    color: white;
+    background-color: rgba(192, 160, 98, 0.1);
+}
+
+nav button.active {
+    background-color: var(--primary-color);
+    color: #111;
+}
+
+main {
+    padding: 2rem 1rem;
+}
+
+section {
+    display: none;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Home Section Styles */
+.welcome-text {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 3rem auto;
+    font-size: 1.1rem;
+    color: var(--secondary-color);
+}
+
+.welcome-text p {
+    margin: 0.5rem 0;
+}
+
+.welcome-text strong {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* Progress Bar Section */
+.progress-section {
+    background-color: var(--card-bg);
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    padding: 1.5rem 2rem;
+    margin: 0 auto 3rem auto;
+    max-width: 800px;
+    text-align: center;
+    box-shadow: 0 4px 15px var(--shadow-color);
+}
+
+.progress-section h3 {
+    color: var(--secondary-color);
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.progress-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+}
+
+.progress-bar {
+    flex-grow: 1;
+    height: 20px;
+    background-color: #333;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #444;
+}
+
+.progress-bar-inner {
+    height: 100%;
+    width: 0%; /* Will be updated by JS */
+    background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+    border-radius: 8px;
+    transition: width 0.5s ease-in-out;
+}
+
+.progress-text {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    min-width: 50px; /* To prevent layout shift */
+    text-align: right;
+}
+
+.progress-motivation {
+    margin-top: 1rem;
+    margin-bottom: 0;
+    color: var(--secondary-color);
+    font-style: italic;
+    min-height: 1.2em;
+    font-weight: 600;
+}
+
+.menu-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.menu-card, .library-category-card {
+    background-color: var(--card-bg);
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: left;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.menu-card:hover, .library-category-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 8px 25px var(--shadow-color), 0 0 20px var(--gold-glow);
+    border-color: var(--primary-color);
+}
+
+.menu-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 0;
+    border-radius: 50%;
+    object-fit: cover;
+    padding: 5px;
+    background-color: #2c2c2c;
+    border: 1px solid #444;
+}
+
+.menu-card h3 {
+    color: var(--secondary-color);
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+/* Library Section */
+.library-category-card {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.library-category-icon {
+    width: 60px;
+    height: 60px;
+}
+
+.library-category-card h3 {
+    color: var(--secondary-color);
+    margin: 0.5rem 0;
+    font-size: 1.3rem;
+}
+
+.library-category-card p {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 0.95rem;
+    flex-grow: 1; /* Helps align items in grid */
+}
+
+/* --- Habits Section --- */
+.promo-text {
+    background-color: var(--card-bg);
+    border: 1px solid var(--primary-color);
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    text-align: center;
+    margin: 0 auto 1.5rem auto;
+    max-width: 800px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.promo-text:hover {
+    background-color: #2c2c2c;
+    box-shadow: 0 0 15px var(--gold-glow);
+}
+
+.promo-text p {
+    margin: 0;
+    color: var(--secondary-color);
+    font-weight: 500;
+}
+
+.habits-controls {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+#restore-defaults-btn, #finalize-routine-btn, #edit-routine-btn {
+    background-color: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#restore-defaults-btn:hover, #finalize-routine-btn:hover, #edit-routine-btn:hover {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+}
+
+#finalize-routine-btn {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+}
+#finalize-routine-btn:hover {
+    background-color: var(--secondary-color);
+}
+
+.routine-block {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    padding: 1.5rem;
+    border: 1px solid #2a2a2a;
+    display: flex;
+    flex-direction: column;
+}
+
+.routine-block h3 {
+    margin-top: 0;
+    color: var(--secondary-color);
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+}
+
+.routine-block ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1; /* Allows the list to take up space */
+}
+
+.routine-block li {
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+}
+
+.routine-block li:hover {
+    background-color: #252525;
+}
+
+.routine-block .task-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--primary-color);
+    flex-shrink: 0;
+}
+
+.routine-block .task-text {
+    flex-grow: 1;
+    cursor: pointer;
+}
+
+.routine-block .task-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.routine-block .task-actions button {
+    background: none;
+    border: none;
+    color: var(--secondary-color);
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 4px;
+    opacity: 0.6;
+    transition: opacity 0.3s, color 0.3s;
+}
+
+.routine-block li:hover .task-actions button {
+    opacity: 1;
+}
+
+.routine-block .task-actions button:hover {
+    color: var(--primary-color);
+}
+
+.routine-block .empty-state {
+    color: #888;
+    font-style: italic;
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.add-task-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 1.5rem;
+    border-top: 1px solid #333;
+    padding-top: 1.5rem;
+}
+
+.add-task-form input {
+    flex-grow: 1;
+    background-color: #252525;
+    border: 1px solid #444;
+    border-radius: 5px;
+    padding: 10px;
+    color: var(--text-color);
+    font-size: 1rem;
+}
+
+.add-task-form button {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+    border: none;
+    border-radius: 5px;
+    padding: 0 1.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.add-task-form button:hover {
+    background-color: var(--secondary-color);
+}
+
+/* Performance Section Specifics */
+.performance-card {
+    text-align: center;
+}
+
+.performance-metric {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0.5rem 0 0 0;
+}
+
+.motivation-card {
+    background-color: #222;
+    text-align: center;
+    border-left: 4px solid var(--primary-color);
+}
+
+.performance-motivation {
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--secondary-color);
+    margin: 0;
+}
+
+.category-perf-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.category-perf-item span {
+    font-size: 1.1rem;
+}
+
+.category-perf-item strong {
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    justify-self: end;
+}
+
+.category-progress-bar-container {
+    grid-column: 1 / -1;
+    height: 8px;
+    background-color: #333;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.category-progress-bar {
+    height: 100%;
+    background-color: var(--primary-color);
+    border-radius: 4px;
+}
+
+/* Back Button */
+.back-button {
+    background-color: var(--primary-color);
+    color: #111;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 25px;
+    cursor: pointer;
+    margin-bottom: 2rem;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+}
+
+.back-button:hover {
+    background-color: var(--secondary-color);
+}
+
+section h2 {
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.section-icon {
+    width: 32px;
+    height: 32px;
+}
+
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.card {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    padding: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #2a2a2a;
+    display: flex; /* Added for layout control */
+    flex-direction: column; /* Added for layout control */
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px var(--shadow-color), 0 0 20px var(--gold-glow);
+    border-color: var(--primary-color);
+}
+
+.card h3 {
+    margin-top: 0;
+    color: var(--secondary-color);
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.card ul li {
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s ease;
+}
+
+.card ul li.completed {
+    color: #888;
+}
+
+.card ul li.completed .task-text,
+.card ul li.completed label {
+    text-decoration: line-through;
+}
+
+.card ul li strong {
+    color: var(--primary-color);
+}
+
+/* This targets non-routine checkboxes, keeping existing styles */
+.habit-card ul li input[type="checkbox"] {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--primary-color);
+}
+
+.habit-card ul li label {
+    cursor: pointer;
+    flex-grow: 1;
+}
+
+/* --- Finance Section --- */
+.finance-card {
+    gap: 1rem;
+}
+
+.finance-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.finance-input-group label {
+    font-weight: 600;
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+}
+
+.finance-input, #add-expense-form input {
+    background-color: #252525;
+    border: 1px solid #444;
+    border-radius: 5px;
+    padding: 10px;
+    color: var(--text-color);
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#add-expense-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+#add-expense-form input {
+    flex: 1 1 120px;
+}
+
+#add-expense-form button, .finance-card button {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+    border: none;
+    border-radius: 5px;
+    padding: 10px 1.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+#add-expense-form button {
+    flex: 1 1 auto;
+    font-size: 1.1rem;
+}
+
+.finance-card button:hover {
+     background-color: var(--secondary-color);
+}
+
+#expense-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+#expense-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    border-radius: 5px;
+    background-color: #252525;
+    margin-bottom: 5px;
+}
+
+.expense-item-name {
+    flex-grow: 1;
+}
+.expense-item-amount {
+    font-weight: 600;
+    color: var(--primary-color);
+    margin: 0 1rem;
+}
+
+.delete-expense-btn {
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-size: 1rem;
+}
+.delete-expense-btn:hover {
+    color: #ff6b6b;
+}
+
+.finance-summary {
+    margin-top: 1rem;
+    border-top: 1px solid #333;
+    padding-top: 1rem;
+}
+
+.finance-summary p {
+    margin: 0.5rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Align items vertically */
+    font-size: 1.1rem;
+}
+
+#final-balance-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.visibility-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: var(--secondary-color);
+    padding: 0;
+    line-height: 1;
+}
+
+.visibility-toggle:hover {
+    opacity: 0.8;
+}
+
+.finance-summary span {
+    font-weight: 700;
+}
+
+.balance-positive {
+    color: #2ecc71;
+}
+
+.balance-negative {
+    color: #e74c3c;
+}
+
+#monthly-savings-progress {
+    margin-top: 1rem;
+}
+
+#edit-savings-goal-btn {
+    background-color: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: auto;
+    margin-top: 1rem;
+    align-self: center;
+}
+#edit-savings-goal-btn:hover {
+    background-color: var(--primary-color) !important;
+    color: var(--background-color);
+}
+
+#archive-month-btn, .action-btn {
+    background-color: var(--teal-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 1.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+#archive-month-btn:hover, .action-btn:hover {
+    background-color: #006666;
+}
+
+#savings-goal-percentage {
+    background-color: #222;
+    padding: 1rem;
+    border-radius: 5px;
+    text-align: center;
+    border-left: 3px solid var(--primary-color);
+    margin: 0;
+}
+
+#achievement-progress h4, #achievement-view h4 {
+    margin-top: 0;
+    color: var(--secondary-color);
+    text-align: center;
+}
+
+.achievement-progress-bar {
+    height: 25px;
+    background-color: #333;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #444;
+}
+
+#achievement-progress-bar-inner {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+    border-radius: 10px;
+    transition: width 0.5s ease-in-out;
+    text-align: center;
+    color: var(--background-color);
+    font-weight: 600;
+    line-height: 25px;
+    font-size: 0.9rem;
+}
+
+.achievement-details {
+    text-align: center;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+}
+#achievement-remaining {
+    text-align: center;
+    font-weight: 600;
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+}
+.achievement-congrats {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+#monthly-savings-progress-bar-inner,
+.progress-bar-inner.green {
+    background: linear-gradient(90deg, #a8e063, #56ab2f) !important;
+}
+
+.progress-bar-inner.orange {
+    background: linear-gradient(90deg, #fbcB47, #f7971e) !important;
+}
+
+.progress-bar-inner.red {
+    background: linear-gradient(90deg, #ff7e5f, #feb47b) !important;
+}
+
+#achievement-view h4 {
+    margin-top: 0;
+    color: var(--secondary-color);
+    text-align: center;
+}
+
+.hidden {
+    display: none !important;
+}
+
+input[type="checkbox"]:checked + label {
+    text-decoration: line-through;
+    color: #888;
+}
+
+.guide-list {
+    margin-top: 1.5rem;
+    padding-left: 0;
+    list-style-position: inside;
+}
+
+.guide-list li {
+    padding-left: 0;
+    margin-bottom: 1.5rem !important;
+    border-left: 3px solid var(--primary-color);
+    padding-left: 1rem;
+}
+
+.guide-list li strong {
+    font-size: 1.1rem;
+    color: var(--secondary-color);
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.guide-list li p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+#guide-action-btn {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+    border: none;
+    border-radius: 5px;
+    padding: 12px 2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+    margin-top: 1.5rem;
+    font-size: 1rem;
+}
+
+#guide-action-btn:hover {
+    background-color: var(--secondary-color);
+}
+
+/* --- Monthly Tracking in Finance --- */
+#monthly-tracking-card {
+    grid-column: 1 / -1; /* Make this card span full width */
+}
+
+#archive-month-form-container {
+    background-color: #252525;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+#current-month-summary, .monthly-record {
+    background-color: #252525;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid #555;
+}
+
+#current-month-summary h4, .monthly-record h4 {
+    margin: 0 0 0.5rem 0;
+    color: var(--secondary-color);
+}
+
+.monthly-stats {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 1rem;
+    text-align: center;
+}
+
+.stat-item p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #aaa;
+}
+.stat-item .value {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.monthly-record {
+    list-style: none;
+    padding: 0;
+}
+
+.monthly-record .record-view {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.monthly-record .month-name {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--secondary-color);
+    flex-grow: 1;
+}
+
+.monthly-record .month-balance {
+    font-weight: 600;
+}
+
+.monthly-record .month-savings {
+    font-size: 0.9rem;
+    font-style: italic;
+    color: #ccc;
+}
+
+.record-actions {
+    margin-left: auto;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.edit-month-btn, .delete-month-btn {
+    background: transparent;
+    border: 1px solid #666;
+    color: #999;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.edit-month-btn:hover {
+    background-color: #333;
+    color: var(--text-color);
+}
+
+.delete-month-btn:hover {
+    background-color: #e74c3c;
+    border-color: #e74c3c;
+    color: white;
+}
+
+.monthly-record.balance-positive { border-left-color: #2ecc71; }
+.monthly-record.balance-negative { border-left-color: #e74c3c; }
+.value.balance-positive { color: #2ecc71; }
+.value.balance-negative { color: #e74c3c; }
+
+.edit-month-form {
+    padding-top: 1rem;
+    margin-top: 1rem;
+    border-top: 1px solid #444;
+}
+
+.edit-month-form .month-selector-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 1rem;
+}
+
+.edit-month-form .month-selector-group select,
+.edit-month-form .month-selector-group input {
+    flex-grow: 1;
+    background-color: #252525;
+    border: 1px solid #444;
+    border-radius: 5px;
+    padding: 10px;
+    color: var(--text-color);
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.edit-form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.edit-form-actions button {
+    flex-grow: 1;
+    padding: 10px;
+    font-size: 0.9rem;
+}
+
+.edit-form-actions .cancel-edit-btn {
+    background-color: #444;
+    color: var(--text-color);
+}
+.edit-form-actions .cancel-edit-btn:hover {
+    background-color: #555;
+}
+
+/* --- State-based visibility for habits section --- */
+#habitos-section.routine-locked #finalize-routine-btn,
+#habitos-section.routine-locked #restore-defaults-btn,
+#habitos-section.routine-locked .add-task-form,
+#habitos-section.routine-locked .task-actions {
+    display: none;
+}
+
+#habitos-section.routine-locked #edit-routine-btn,
+#habitos-section.routine-locked #routine-finalized-message {
+    display: block; /* or flex, grid, etc., depending on the element */
+}
+#habitos-section.routine-locked #routine-finalized-message {
+    display: inherit; /* will inherit the default from .promo-text */
+}
+
+/* --- Workout & Diet Setup --- */
+#workout-container, #diet-container {
+    margin-bottom: 2rem;
+}
+
+.setup-container {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    padding: 2rem;
+    text-align: center;
+    border: 1px solid #2a2a2a;
+    box-shadow: 0 4px 15px var(--shadow-color);
+}
+
+.setup-container h3 {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    margin-top: 0;
+}
+
+.setup-container p {
+    color: var(--secondary-color);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+.setup-question {
+    margin-bottom: 1.5rem;
+}
+
+.setup-question label {
+    display: block;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.choice-btn {
+    background-color: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 180px;
+}
+
+.choice-btn:hover {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+    transform: translateY(-3px);
+}
+
+.reset-plan-btn {
+    background: transparent;
+    border: 1px solid #666;
+    color: #999;
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.reset-plan-btn:hover {
+    background-color: #333;
+    color: var(--text-color);
+    border-color: #888;
+}
+
+.workout-card, .diet-card {
+    flex-grow: 1; /* Make cards in a row have same height */
+}
+
+/* Performance Section Charts */
+.charts-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    align-items: center;
+}
+
+.chart-wrapper {
+    flex: 1 1 300px; /* Allow wrapping */
+    min-width: 250px;
+    position: relative;
+}
+
+#category-bars-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.category-bar-item {
+    width: 100%;
+}
+.category-bar-item p {
+    margin: 0 0 0.5rem 0;
+    font-weight: 600;
+    color: var(--secondary-color);
+}
+
+.progress-bar.performance-bar {
+    height: 25px;
+    background-color: #333;
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid #444;
+}
+
+.progress-bar-inner.performance-bar-inner {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+    border-radius: 4px;
+    transition: width 0.5s ease-in-out;
+    text-align: center;
+    color: var(--background-color);
+    font-weight: 600;
+    line-height: 25px;
+    font-size: 0.9rem;
+}
+
+/* Achievements */
+#achievements-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.achievement-medal {
+    background-color: #252525;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+}
+
+.achievement-medal.unlocked {
+    opacity: 1;
+    border-left: 4px solid var(--primary-color);
+    background: var(--card-bg);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.achievement-medal .icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.achievement-medal h4 {
+    margin: 0 0 0.5rem 0;
+    color: var(--secondary-color);
+}
+.achievement-medal.unlocked h4 {
+    color: var(--primary-color);
+}
+
+.achievement-medal p {
+    margin: 0 0 1rem 0;
+    font-size: 0.9rem;
+    color: #aaa;
+}
+.achievement-medal.unlocked p {
+    color: var(--text-color);
+}
+
+.achievement-date {
+    font-style: italic;
+    font-size: 0.8rem;
+    color: #777;
+}
+
+.achievement-medal.unlocked .achievement-date {
+    color: var(--secondary-color);
+}
+
+.guide-text {
+    font-size: 0.9rem;
+    color: #bbb;
+    background-color: #252525;
+    padding: 0.75rem;
+    border-radius: 5px;
+    margin: 0.5rem 0;
+    text-align: center;
+    border-left: 3px solid var(--teal-color);
+}

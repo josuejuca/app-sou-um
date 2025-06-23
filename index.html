@@ -1,0 +1,380 @@
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sou 1% - Desenvolvimento Pessoal</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <img src="upscalemedia-transformed.png" alt="Logo Sou 1%" class="logo">
+        <h1>Sou 1%</h1>
+        <p id="greeting">Seu assistente para o desenvolvimento pessoal</p>
+    </header>
+
+    <main>
+        <section id="home-section" class="active">
+            <div class="welcome-text">
+                <p>Sou seu assistente pessoal para alcançar a sua melhor versão!</p>
+                <p><strong>Lembre-se:</strong> A ação com consistência que gera a excelência, a excelência é um hábito, e para alcançar a excelência, você precisa fazer pelo menos 1 missão por dia aqui!</p>
+                <p>Se você se comprometer, eu garanto que você vai conseguir tudo que quiser na vida!</p>
+            </div>
+            <div class="progress-section">
+                <h3>Seu Progresso Diário</h3>
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-bar-inner" id="daily-progress-bar"></div>
+                    </div>
+                    <span class="progress-text" id="daily-progress-text">0/0</span>
+                </div>
+                <p class="progress-motivation" id="progress-motivation">Complete suas tarefas para ver seu progresso!</p>
+            </div>
+            <div class="menu-container">
+                <div class="menu-card" id="go-habitos">
+                    <img src="icon-habit.png" alt="Ícone de Hábitos e Rotinas" class="menu-icon">
+                    <h3>Hábitos e Rotinas</h3>
+                </div>
+                <div class="menu-card" id="go-biblioteca">
+                    <img src="icon-library.png" alt="Ícone de Biblioteca" class="menu-icon">
+                    <h3>Biblioteca</h3>
+                </div>
+                <div class="menu-card" id="go-treinos">
+                    <img src="icon-workout.png" alt="Ícone de Treinos e Dietas" class="menu-icon">
+                    <h3>Treinos e Dietas</h3>
+                </div>
+                <div class="menu-card" id="go-financas">
+                    <img src="icon-finance.png" alt="Ícone de Finanças" class="menu-icon">
+                    <h3>Finanças</h3>
+                </div>
+                <div class="menu-card" id="go-desempenho">
+                    <img src="icon-performance.png" alt="Ícone de Meu Desempenho" class="menu-icon">
+                    <h3>Meu Desempenho</h3>
+                </div>
+                <div class="menu-card" id="go-como-usar">
+                    <img src="icon-guide.png" alt="Ícone de Como Usar o App" class="menu-icon">
+                    <h3>Como Usar o App</h3>
+                </div>
+            </div>
+        </section>
+
+        <section id="habitos-section">
+            <button class="back-button">&larr; Voltar ao Menu</button>
+            <h2><img src="icon-habit.png" alt="" class="section-icon"> Hábitos e Rotinas</h2>
+
+            <div class="promo-text" id="promo-link-biblioteca">
+                <p>Se você ainda não sabe por onde começar, acesse a biblioteca e garanta o seu manual completo e totalmente gratuito sobre hábitos e rotinas.</p>
+            </div>
+
+            <div class="habits-controls">
+                <button id="restore-defaults-btn">Restaurar Rotina Padrão</button>
+                <button id="finalize-routine-btn">Finalizar minha rotina diária</button>
+                <button id="edit-routine-btn" class="hidden">Editar rotina</button>
+            </div>
+
+            <div id="routine-finalized-message" class="promo-text hidden">
+                <p>Sua rotina está definida. Agora é com você. Volte aqui apenas se quiser evoluir sua estrutura.</p>
+            </div>
+
+            <div class="card-container" id="habitos-container">
+                <!-- Dynamic content will be inserted here by script.js -->
+            </div>
+        </section>
+
+        <section id="treinos-section">
+            <button class="back-button">&larr; Voltar ao Menu</button>
+            <div id="workout-container">
+                <h2><img src="icon-workout.png" alt="" class="section-icon"> Meu Plano de Treinos</h2>
+                <div id="workout-setup" class="setup-container">
+                    <h3>Vamos montar seu plano de treinos!</h3>
+                    <p>Responda duas perguntas rápidas para personalizar sua rotina.</p>
+                    <div class="setup-question">
+                        <label>1. Qual seu sexo?</label>
+                        <div class="button-group">
+                            <button class="choice-btn" data-type="gender" data-value="masculino">Masculino</button>
+                            <button class="choice-btn" data-type="gender" data-value="feminino">Feminino</button>
+                        </div>
+                    </div>
+                    <div class="setup-question hidden">
+                        <label>2. Qual seu objetivo principal?</label>
+                        <div class="button-group">
+                            <button class="choice-btn" data-type="goal" data-value="ganhar-massa">Ganhar Massa</button>
+                            <button class="choice-btn" data-type="goal" data-value="perder-peso">Perder Peso</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="workout-plan-display" class="hidden">
+                    <!-- Workout plan will be displayed here -->
+                </div>
+                <div id="workout-actions" class="workout-actions hidden">
+                    <button id="log-workout-btn">✅ Marcar treino de hoje como concluído</button>
+                    <p id="workout-logged-today" class="hidden">Você já registrou seu treino hoje!</p>
+                </div>
+            </div>
+
+            <div id="diet-container">
+                <h2><img src="icon-diet.png" alt="" class="section-icon"> Meu Plano Alimentar</h2>
+                <div id="diet-setup" class="setup-container">
+                    <h3>Agora, vamos ao seu plano alimentar.</h3>
+                    <p>Qual é o seu objetivo?</p>
+                     <div class="setup-question">
+                        <div class="button-group">
+                            <button class="choice-btn" data-type="diet-goal" data-value="ganhar-peso">Ganhar Peso</button>
+                            <button class="choice-btn" data-type="diet-goal" data-value="perder-peso">Perder Peso</button>
+                        </div>
+                    </div>
+                </div>
+                 <div id="diet-plan-display" class="hidden">
+                    <!-- Diet plan will be displayed here -->
+                </div>
+                <div id="diet-actions" class="workout-actions hidden">
+                    <button id="log-diet-btn">✅ Segui o plano alimentar hoje</button>
+                    <p id="diet-logged-today" class="hidden">Você já registrou sua adesão à dieta hoje!</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="biblioteca-section">
+            <button class="back-button">&larr; Voltar ao Menu</button>
+            <h2><img src="icon-library.png" alt="" class="section-icon"> Biblioteca</h2>
+            <div class="card-container" id="library-categories-container">
+                 <div class="library-category-card" data-category="manual">
+                    <img src="icon-guide.png" alt="Ícone Manual" class="library-category-icon">
+                    <h3>📘 Manual Completo</h3>
+                    <p>Guias essenciais para começar sua jornada.</p>
+                </div>
+                <div class="library-category-card" data-category="habitos">
+                    <img src="icon-habit.png" alt="Ícone Hábitos" class="library-category-icon">
+                    <h3>⏰ Hábitos e Rotinas</h3>
+                    <p>Estratégias para construir hábitos vencedores.</p>
+                </div>
+                <div class="library-category-card" data-category="disciplina">
+                    <img src="icon-performance.png" alt="Ícone Disciplina" class="library-category-icon">
+                    <h3>🔥 Disciplina e Foco</h3>
+                    <p>Conteúdos para vencer a procrastinação.</p>
+                </div>
+                <div class="library-category-card" data-category="financas">
+                    <img src="icon-finance.png" alt="Ícone Finanças" class="library-category-icon">
+                    <h3>💰 Gestão Financeira</h3>
+                    <p>Organize suas finanças e invista no futuro.</p>
+                </div>
+                 <div class="library-category-card" data-category="treinos">
+                    <img src="icon-workout.png" alt="Ícone Treinos" class="library-category-icon">
+                    <h3>🏋️ Treinos e Dietas</h3>
+                    <p>Planejamento corporal e vida saudável.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="financas-section">
+            <button class="back-button">&larr; Voltar ao Menu</button>
+            <h2><img src="icon-finance.png" alt="" class="section-icon"> Finanças</h2>
+
+            <div class="promo-text" id="promo-link-biblioteca-financas">
+                <p>Se você ainda não sabe por onde começar, acesse a biblioteca e garanta o seu manual completo e totalmente gratuito sobre gestão financeira.</p>
+            </div>
+
+            <div class="card-container" id="financas-container">
+                <!-- Seção 1: Controle de Gastos -->
+                <div class="card finance-card">
+                    <h3>📊 Controle de Gastos</h3>
+                    <div class="finance-input-group">
+                        <label for="net-income">Sua renda líquida mensal (R$)</label>
+                        <input type="number" id="net-income" placeholder="3000.00" class="finance-input">
+                    </div>
+                    <h4>Seus Gastos</h4>
+                    <ul id="expense-list">
+                        <!-- Gastos serão adicionados dinamicamente -->
+                        <p class="empty-state">Nenhum gasto adicionado ainda.</p>
+                    </ul>
+                    <form id="add-expense-form">
+                        <input type="text" id="expense-name" placeholder="Nome do gasto" required>
+                        <input type="number" id="expense-amount" placeholder="Valor (R$)" step="0.01" required>
+                        <button type="submit">Adicionar Gasto</button>
+                    </form>
+                    <div class="finance-summary">
+                        <p>Total de Gastos: <span id="total-expenses">R$ 0.00</span></p>
+                        <p>Saldo Final: <span id="final-balance-wrapper">
+                                <span id="final-balance">R$ 0.00</span>
+                                <button id="toggle-balance-visibility" class="visibility-toggle">👁️</button>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Seção 2: Meta de Poupança -->
+                <div class="card finance-card">
+                    <h3>💰 Meta de Poupança</h3>
+                    <div id="savings-goal-setup">
+                        <div class="finance-input-group">
+                            <label for="savings-goal-total-input">Minha meta de poupança (R$)</label>
+                            <input type="number" id="savings-goal-total-input" placeholder="10000.00" class="finance-input">
+                        </div>
+                        <div class="finance-input-group">
+                            <label for="savings-goal-saved-input">Quanto já consegui juntar (R$)</label>
+                            <input type="number" id="savings-goal-saved-input" placeholder="2500.00" class="finance-input">
+                        </div>
+                        <button id="set-savings-goal-btn">✅ Definir Meta</button>
+                    </div>
+                    <div id="savings-goal-progress" class="hidden">
+                         <div class="progress-bar achievement-progress-bar">
+                             <div class="progress-bar-inner" id="savings-goal-progress-bar-inner"></div>
+                         </div>
+                         <p class="achievement-details" id="savings-goal-percentage-text">Você já alcançou 0% da sua meta de poupança.</p>
+                         <p id="savings-goal-remaining">Faltam R$0.00 para atingir seu objetivo.</p>
+                         <button id="edit-savings-goal-btn">✏️ Editar Meta</button>
+                    </div>
+                </div>
+
+                <!-- Seção 3: Próxima Conquista -->
+                <div class="card finance-card">
+                    <h3>🎯 Próxima Conquista</h3>
+                     <div id="achievement-view">
+                         <div class="finance-input-group">
+                            <label for="achievement-name">Nome do objetivo</label>
+                            <input type="text" id="achievement-name" placeholder="Viagem para a praia" class="finance-input">
+                        </div>
+                        <div class="finance-input-group">
+                            <label for="achievement-value">Valor necessário (R$)</label>
+                            <input type="number" id="achievement-value" placeholder="1500.00" class="finance-input">
+                        </div>
+                         <div class="finance-input-group">
+                            <label for="achievement-saved">Valor já poupado (R$)</label>
+                            <input type="number" id="achievement-saved" placeholder="750.00" class="finance-input">
+                        </div>
+                        <button id="save-achievement-btn">Salvar Objetivo</button>
+                    </div>
+                    <div id="achievement-progress" class="hidden">
+                         <h4 id="achievement-progress-title"></h4>
+                         <div class="progress-bar achievement-progress-bar">
+                             <div class="progress-bar-inner" id="achievement-progress-bar-inner"></div>
+                         </div>
+                         <p class="achievement-details">Progresso: <span id="achievement-current-saved">R$ 0.00</span> / <span id="achievement-total-needed">R$ 0.00</span></p>
+                         <p id="achievement-remaining">Faltam R$ 0.00 para alcançar sua conquista.</p>
+                         <button id="edit-achievement-btn">Editar Objetivo</button>
+                         <div id="achievement-complete" class="hidden">
+                             <p class="achievement-congrats">🎉 Parabéns! Você alcançou seu objetivo!</p>
+                             <button id="new-achievement-btn">Cadastrar Novo Objetivo</button>
+                         </div>
+                    </div>
+                </div>
+
+                <!-- Seção 4: Acompanhamento Mensal -->
+                <div class="card finance-card" id="monthly-tracking-card">
+                    <h3>📆 Acompanhamento Mensal</h3>
+                    <p class="guide-text">Ao final de um período (ex: um mês), clique no botão abaixo para salvar um registro do seu desempenho financeiro no histórico.</p>
+                    <button id="archive-month-btn" class="action-btn">Arquivar Desempenho Atual</button>
+                    <div id="archive-month-form-container" class="hidden">
+                        <!-- Form will be injected here -->
+                    </div>
+                    <h4>Histórico de Desempenho</h4>
+                    <ul id="monthly-tracking-list">
+                        <!-- Historical month data will be injected here -->
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="desempenho-section">
+            <button class="back-button">&larr; Voltar ao Menu</button>
+            <h2><img src="icon-performance.png" alt="" class="section-icon"> Meu Desempenho</h2>
+            <div class="card-container">
+                <div class="card performance-card">
+                    <h3>🔥 Sequência de Dias</h3>
+                    <p class="performance-metric" id="streak-display">0 dias</p>
+                </div>
+                <div class="card performance-card">
+                    <h3>🎯 Total de Hábitos Concluídos</h3>
+                    <p class="performance-metric" id="total-tasks-display">0</p>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Progresso por Categoria (Visão Geral)</h3>
+                <div class="charts-container">
+                    <div class="chart-wrapper">
+                        <canvas id="categoryPieChart"></canvas>
+                    </div>
+                    <div id="category-bars-container" class="chart-wrapper">
+                         <!-- Bar charts will be injected here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>🏅 Conquistas Desbloqueadas</h3>
+                <div id="achievements-container">
+                    <!-- Achievements will be populated here -->
+                </div>
+            </div>
+
+             <div class="card motivation-card">
+                 <p class="performance-motivation" id="performance-motivation">Carregando sua motivação...</p>
+             </div>
+        </section>
+
+        <section id="como-usar-section">
+            <button class="back-button">&larr; Voltar ao Menu</button>
+            <h2><img src="icon-guide.png" alt="" class="section-icon"> Como Usar o App</h2>
+            <div class="card-container">
+                <div class="card">
+                    <h3>Seu Guia para o Sucesso</h3>
+                    <p>Este aplicativo foi projetado para ser seu parceiro na jornada de desenvolvimento pessoal. Veja como cada parte funciona:</p>
+                    <ul class="guide-list">
+                        <li>
+                            <strong>1. Tela Inicial e Progresso Diário</strong>
+                            <p>Sua tela de comando. Aqui você vê sua barra de progresso do dia baseada nas tarefas que você mesmo configurou em "Hábitos e Rotinas". Cada tarefa concluída aumenta sua barra. Ao chegar em 100%, você recebe uma mensagem de execução.</p>
+                        </li>
+                        <li>
+                            <strong>2. Hábitos e Rotinas</strong>
+                            <p>Onde você cria sua rotina personalizada dividida em: Rotina Matinal, Desenvolvimento Profissional e Rotina Noturna. Você pode adicionar, editar e excluir tarefas. Ao finalizar sua rotina, ela será reiniciada automaticamente todos os dias para ser executada e alimentar seu progresso diário.</p>
+                        </li>
+                        <li>
+                            <strong>3. Meu Desempenho</strong>
+                            <p>Aqui você acompanha sua evolução total. O app mede tudo e mostra: dias com rotina concluída, total de tarefas, consistência (dias seguidos), gráficos por categoria e conquistas desbloqueadas. Você pode ver seu nível e até compartilhar sua evolução.</p>
+                        </li>
+                        <li>
+                            <strong>4. Gestão Financeira</strong>
+                            <p>Organize sua vida financeira: informe sua renda, adicione gastos, veja seu saldo, defina metas de economia e cadastre conquistas (ex: "Comprar notebook") para acompanhar seu progresso.</p>
+                        </li>
+                        <li>
+                            <strong>5. Treinos e Dietas</strong>
+                            <p>Sistema para evoluir fisicamente. Defina seu sexo e objetivo para receber um treino ABC personalizado. Na parte de Dietas, escolha seu objetivo e receba um plano de 4 refeições. Seu histórico alimenta seu desempenho.</p>
+                        </li>
+                        <li>
+                            <strong>6. Biblioteca</strong>
+                            <p>Conteúdos para sua evolução mental, organizados por temas como Manual Completo, Hábitos, Disciplina, Finanças e Treinos, com áudios, PDFs e textos práticos.</p>
+                        </li>
+                         <li>
+                            <strong>7. Como Tudo se Conecta</strong>
+                            <p>Cada tarefa concluída em hábitos, treinos, finanças ou dieta, alimenta sua barra de progresso diário e sua área de desempenho. Quanto mais você executa, mais conquista medalhas e sobe de nível.</p>
+                        </li>
+                         <li>
+                            <strong>Extras</strong>
+                            <p>Seus dados são salvos localmente no seu dispositivo. Cada usuário personaliza e controla tudo de forma privada. Você pode redefinir sua rotina a qualquer momento. Tudo é gamificado para manter você motivado e em movimento.</p>
+                        </li>
+                    </ul>
+                    <button id="guide-action-btn">Agora que você entendeu tudo, é hora de executar.</button>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script type="importmap">
+    {
+        "imports": {
+            "chart.js": "https://esm.sh/chart.js@4.4.2",
+            "./config.js": "./config.js",
+            "./state.js": "./state.js",
+            "./ui.js": "./ui.js",
+            "./habits.js": "./habits.js",
+            "./finance.js": "./finance.js",
+            "./workouts.js": "./workouts.js",
+            "./performance.js": "./performance.js"
+        }
+    }
+    </script>
+    <script type="module" src="script.js"></script>
+</body>
+</html>
