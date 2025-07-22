@@ -1,8 +1,9 @@
 import { globalState, saveGlobalState } from './state.js';
 import { updatePerformanceMetrics } from './performance.js';
 import { loadFinanceData } from './finance.js';
-import { toggleRoutineLockState } from './habits.js';
+import { toggleRoutineLockState, loadHabitState } from './habits.js';
 import { libraryContent } from './config.js';
+import Swal from 'sweetalert2';
 
 export let domElements = {};
 
@@ -92,21 +93,46 @@ export function showSection(sectionIdToShow) {
         loadFinanceData();
     }
     if (sectionIdToShow === 'habitos-section') {
-        const isFinalized = globalState.isRoutineFinalized;
-        toggleRoutineLockState(isFinalized);
+        // Ensure the habit state is fully reloaded and rendered correctly
+        // when navigating to the section.
+        loadHabitState();
     }
     window.scrollTo(0, 0);
 }
 
-export function setGreeting() {
+export async function setGreeting() {
     let userName = globalState.userName;
     if (!userName) {
-        userName = prompt("Bem-vindo! Por favor, digite seu nome para personalizar sua jornada.");
+        const { value: name } = await Swal.fire({
+            title: 'Bem-vindo(a) ao Sou 1%!',
+            text: 'Digite seu nome para personalizar sua jornada.',
+            input: 'text',
+            inputPlaceholder: 'Seu nome aqui...',
+            confirmButtonText: 'Começar!',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            confirmButtonColor: 'var(--primary-color)',
+            customClass: {
+                popup: 'themed-popup',
+                title: 'themed-title',
+                htmlContainer: 'themed-content',
+                input: 'themed-input'
+            },
+            inputValidator: (value) => {
+                if (!value || value.trim().length < 2) {
+                    return 'Por favor, digite um nome válido.'
+                }
+            }
+        });
+        
+        userName = name;
+
         if (userName && userName.trim() !== '') {
             globalState.userName = userName.trim();
             saveGlobalState();
         } else {
-            domElements.greetingElement.textContent = "Bem-vindo! Cadastre seu nome para personalizar sua jornada.";
+             // This branch is less likely now due to validator, but keep as fallback
+            domElements.greetingElement.textContent = "Bem-vindo! Clique aqui para definir seu nome.";
             domElements.greetingElement.style.cursor = "pointer";
             domElements.greetingElement.onclick = setGreeting;
             return;
@@ -187,16 +213,10 @@ export function updateProgress() {
     if (domElements.progressMotivation) {
         if (progressPercentage >= 100) {
             domElements.progressMotivation.textContent = "Você venceu o dia. Disciplina é a ponte entre sonhos e conquistas.";
-            const barInner = domElements.progressBar.parentElement.querySelector('.progress-bar-inner');
-            if (barInner) barInner.classList.add('green');
         } else if (completedTasks > 0) {
             domElements.progressMotivation.textContent = "Continue assim, você está no caminho certo!";
-            const barInner = domElements.progressBar.parentElement.querySelector('.progress-bar-inner');
-            if (barInner) barInner.classList.remove('green');
         } else {
             domElements.progressMotivation.textContent = "Complete suas tarefas para ver seu progresso!";
-            const barInner = domElements.progressBar.parentElement.querySelector('.progress-bar-inner');
-            if (barInner) barInner.classList.remove('green');
         }
     }
 }
@@ -204,16 +224,15 @@ export function updateProgress() {
 export function initializeCheckboxes() {
     let taskCheckboxes = document.querySelectorAll('.task-checkbox');
 
-    const todayStr = new Date().toDateString();
-    if (globalState.lastVisitDate !== todayStr) {
-        globalState.tasksState = {};
-        globalState.lastVisitDate = todayStr;
-        saveGlobalState();
-    }
+    // The daily reset logic is now centralized in script.js
+    // This function just needs to apply the current state.
 
     taskCheckboxes.forEach(checkbox => {
-        const savedState = globalState.tasksState[checkbox.id];
+        // Use the task's text content as the key for state, ensuring consistency
+        const taskText = checkbox.dataset.taskText;
+        const savedState = globalState.tasksState[taskText];
         const liElement = checkbox.closest('li');
+
         if (savedState === true) {
             checkbox.checked = true;
             if(liElement) liElement.classList.add('completed');
@@ -224,21 +243,19 @@ export function initializeCheckboxes() {
 
         checkbox.addEventListener('change', (e) => {
             const isChecked = e.target.checked;
-            globalState.tasksState[e.target.id] = isChecked;
+            const textKey = e.target.dataset.taskText;
+            globalState.tasksState[textKey] = isChecked;
+
             const parentLi = e.target.closest('li');
             if (parentLi) {
                 parentLi.classList.toggle('completed', isChecked);
             }
             
-            if (isChecked) {
-                globalState.performance.totalHabitsCompleted++;
-                // This function is in performance.js, we need to import it if we want to call it.
-                // For now, let's assume it gets called from a central place or not at all.
-                // The prompt refactors, not adds functionality.
-            } else {
-                 globalState.performance.totalHabitsCompleted = Math.max(0, globalState.performance.totalHabitsCompleted - 1);
-            }
-            // logPerformanceEvent('habits'); in performance.js
+            // This logic was flawed, it shouldn't modify the total.
+            // totalHabitsCompleted is a historical counter, not daily.
+            // It should only be incremented. We can refine this later if needed.
+            // For now, let's just update progress.
+            
             updateProgress();
             saveGlobalState();
         });

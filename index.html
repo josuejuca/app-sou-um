@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sou 1% - Desenvolvimento Pessoal</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
@@ -74,8 +75,8 @@
 
             <div class="habits-controls">
                 <button id="restore-defaults-btn">Restaurar Rotina Padrão</button>
-                <button id="finalize-routine-btn">Finalizar minha rotina diária</button>
-                <button id="edit-routine-btn" class="hidden">Editar rotina</button>
+                <button id="finalize-routine-btn">✅ Definir e Bloquear Rotina</button>
+                <button id="edit-routine-btn" class="hidden">✏️ Editar Rotina</button>
             </div>
 
             <div id="routine-finalized-message" class="promo-text hidden">
@@ -356,7 +357,7 @@
                         </li>
                         <li>
                             <strong>2. Hábitos e Rotinas: Construa Seu Sistema</strong>
-                            <p>O coração do seu progresso. Monte suas rotinas matinal, profissional e noturna. Uma vez definida, ela é reiniciada a cada dia, pronta para ser conquistada novamente e alimentar seu desempenho.</p>
+                            <p>O coração do seu progresso. Monte suas rotinas matinal, profissional e noturna. Ao clicar em "Definir e Bloquear Rotina", você trava a edição e foca apenas na execução diária. As tarefas se reiniciam a cada dia, prontas para serem conquistadas novamente.</p>
                         </li>
                         <li>
                             <strong>3. Meu Desempenho: Seu Histórico de Vitórias</strong>
@@ -392,6 +393,7 @@
     {
         "imports": {
             "chart.js": "https://esm.sh/chart.js@4.4.2",
+            "sweetalert2": "https://esm.sh/sweetalert2@11",
             "./config.js": "./config.js",
             "./state.js": "./state.js",
             "./ui.js": "./ui.js",

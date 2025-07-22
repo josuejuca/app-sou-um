@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 export let globalState = {};
 
 export const defaultGlobalState = {
@@ -44,7 +45,17 @@ export function loadGlobalState() {
             }
         } catch (error) {
             console.error("Error parsing saved state from localStorage:", error);
-            alert("Erro ao carregar seus dados salvos. Pode ser necessário redefinir os dados se o problema persistir.");
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro ao carregar dados',
+                text: 'Não foi possível carregar seus dados salvos. Se o problema persistir, pode ser necessário limpar os dados do site no seu navegador.',
+                confirmButtonColor: 'var(--primary-color)',
+                customClass: {
+                    popup: 'themed-popup',
+                    title: 'themed-title',
+                    htmlContainer: 'themed-content'
+                }
+            });
             savedState = {}; 
         }
     }

@@ -1,5 +1,6 @@
 import { globalState, saveGlobalState, defaultGlobalState } from './state.js';
 import { logAchievementCompletion } from './performance.js';
+import Swal from 'sweetalert2';
 
 let dom = {};
 let financeData = {};
@@ -68,7 +69,17 @@ function attachEventListeners() {
         const saved = parseFloat(dom.savingsGoalSavedInput.value) || 0;
 
         if (total <= 0) {
-            alert('Por favor, defina uma meta de poupança maior que zero.');
+            Swal.fire({
+                icon: 'error',
+                title: 'Meta Inválida',
+                text: 'Por favor, defina uma meta de poupança maior que zero.',
+                confirmButtonColor: 'var(--primary-color)',
+                customClass: {
+                    popup: 'themed-popup',
+                    title: 'themed-title',
+                    htmlContainer: 'themed-content'
+                }
+            });
             return;
         }
 
@@ -127,7 +138,17 @@ function attachEventListeners() {
             saveFinanceData();
             updateAchievementUI();
         } else {
-            alert('Por favor, preencha o nome e um valor válido para o objetivo.');
+            Swal.fire({
+                icon: 'warning',
+                title: 'Dados Incompletos',
+                text: 'Por favor, preencha o nome e um valor válido para o objetivo.',
+                confirmButtonColor: 'var(--primary-color)',
+                customClass: {
+                    popup: 'themed-popup',
+                    title: 'themed-title',
+                    htmlContainer: 'themed-content'
+                }
+            });
         }
     });
 
@@ -231,11 +252,39 @@ function handleMonthlyListClick(e) {
     }
 
     if (e.target.classList.contains('delete-month-btn')) {
-        if(confirm(`Tem certeza que deseja excluir os dados do mês de ${view.querySelector('.month-name').textContent}? Esta ação não poderá ser desfeita.`)) {
-            delete financeData.monthlyTracking[key];
-            saveFinanceData();
-            updateMonthlyTrackingUI();
-        }
+        const monthName = view.querySelector('.month-name').textContent;
+        Swal.fire({
+            title: `Excluir ${monthName}?`,
+            text: "Esta ação não poderá ser desfeita.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sim, excluir!',
+            cancelButtonText: 'Cancelar',
+            customClass: {
+                popup: 'themed-popup',
+                title: 'themed-title',
+                htmlContainer: 'themed-content'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                delete financeData.monthlyTracking[key];
+                saveFinanceData();
+                updateMonthlyTrackingUI();
+                Swal.fire({
+                    title: 'Excluído!',
+                    text: `O registro de ${monthName} foi removido.`,
+                    icon: 'success',
+                    confirmButtonColor: 'var(--primary-color)',
+                    customClass: {
+                        popup: 'themed-popup',
+                        title: 'themed-title',
+                        htmlContainer: 'themed-content'
+                    }
+                });
+            }
+        });
     }
 
     if (e.target.classList.contains('cancel-edit-btn')) {
@@ -259,7 +308,17 @@ function handleSaveMonth(formEl, isNewFromArchive, originalKey = null) {
     const newKey = `${newYear}-${String(newMonth).padStart(2, '0')}`;
 
     if (financeData.monthlyTracking[newKey] && (isNewFromArchive || newKey !== originalKey)) {
-        alert('Este mês já existe. Por favor, escolha outro mês ou edite o registro existente.');
+        Swal.fire({
+            icon: 'error',
+            title: 'Mês Duplicado',
+            text: 'Este mês já existe. Por favor, escolha outro mês ou edite o registro existente.',
+            confirmButtonColor: 'var(--primary-color)',
+            customClass: {
+                popup: 'themed-popup',
+                title: 'themed-title',
+                htmlContainer: 'themed-content'
+            }
+        });
         return;
     }
 
@@ -284,16 +343,37 @@ function handleSaveMonth(formEl, isNewFromArchive, originalKey = null) {
     };
     
     if(isNewFromArchive) {
-        if(confirm("Mês finalizado com sucesso. Seus resultados foram adicionados ao histórico mensal. Deseja limpar a lista de gastos atual para começar um novo período?")) {
-            financeData.expenses = [];
-        }
+        Swal.fire({
+            title: 'Mês Arquivado!',
+            text: "Seus resultados foram adicionados ao histórico mensal. Deseja limpar a lista de gastos atual para começar um novo período?",
+            icon: 'success',
+            showCancelButton: true,
+            confirmButtonColor: 'var(--primary-color)',
+            cancelButtonColor: '#aaa',
+            confirmButtonText: 'Sim, limpar!',
+            cancelButtonText: 'Não, manter',
+            customClass: {
+                popup: 'themed-popup',
+                title: 'themed-title',
+                htmlContainer: 'themed-content'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                financeData.expenses = [];
+                saveFinanceData();
+                updateFinanceUI(); // To update expense list if cleared
+            }
+        });
+
         dom.archiveMonthFormContainer.innerHTML = '';
         dom.archiveMonthFormContainer.classList.add('hidden');
         showArchiveButtons(true);
     }
     
     saveFinanceData();
-    updateFinanceUI(); // To update expense list if cleared
+    if (!isNewFromArchive) {
+        updateFinanceUI();
+    }
     updateMonthlyTrackingUI();
 }
 

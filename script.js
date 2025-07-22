@@ -9,6 +9,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // High-level initialization flow
     loadGlobalState();
     applyTheme(); // Apply theme first to avoid flash of wrong theme
+    
+    // Daily Reset Logic - run right after loading state
+    const todayStr = new Date().toDateString();
+    if (globalState.lastVisitDate !== todayStr) {
+        globalState.lastVisitDate = todayStr;
+        // Reset daily-specific states but keep the configurations
+        globalState.tasksState = {}; // Reset habit checks
+        if (globalState.dietPlan && globalState.dietPlan.checkedMeals) {
+             globalState.dietPlan.checkedMeals = {}; // Reset diet checks
+        }
+        saveGlobalState();
+    }
+    
     initUI();
     setGreeting();
     
@@ -19,25 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initPerformance();
 
     // After modules are ready, setup UI that depends on them
-    loadHabitState();
+    loadHabitState(); // This loads habit data and sets the initial lock state
     initializeCheckboxes();
     setupNavigation();
-
-    // Initial check for daily reset logic
-    const todayStr = new Date().toDateString();
-    if (globalState.lastVisitDate !== todayStr) {
-        globalState.lastVisitDate = todayStr;
-        // Reset daily-specific states but keep the configurations
-        globalState.tasksState = {}; // For habits
-        if (globalState.dietPlan) {
-            globalState.dietPlan.checkedMeals = {}; // For diet
-        }
-        if(globalState.performance.log) {
-            const todayKey = new Date().toISOString().split('T')[0];
-            if(globalState.performance.log[todayKey]) {
-                globalState.performance.log[todayKey].workout = false; // Reset daily workout log
-            }
-        }
-        saveGlobalState();
-    }
 });

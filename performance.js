@@ -1,6 +1,7 @@
 import { globalState, saveGlobalState } from './state.js';
 import { achievementsList } from './config.js';
 import { Chart, registerables } from 'chart.js';
+import Swal from 'sweetalert2';
 
 Chart.register(...registerables);
 
@@ -123,8 +124,17 @@ function checkAchievements() {
 
     if (consecutivePositiveMonths >= 3 && !perf.achievements['trimestre-blindado']) {
         perf.achievements['trimestre-blindado'] = today;
-        // Optionally, show a toast/notification here
-        alert("Parabéns! Você conquistou o Trimestre Blindado! 3 meses seguidos de controle financeiro e saldo no verde.");
+        Swal.fire({
+            icon: 'success',
+            title: 'Conquista Desbloqueada!',
+            text: 'Parabéns! Você conquistou o Trimestre Blindado! 3 meses seguidos de controle financeiro e saldo no verde.',
+            confirmButtonColor: 'var(--primary-color)',
+            customClass: {
+                popup: 'themed-popup',
+                title: 'themed-title',
+                htmlContainer: 'themed-content'
+            }
+        });
     }
 }
 

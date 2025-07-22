@@ -1,6 +1,7 @@
 import { globalState, saveGlobalState } from './state.js';
 import { workoutPlans, dietPlans } from './config.js';
 import { logPerformanceEvent } from './performance.js';
+import Swal from 'sweetalert2';
 
 let dom = {};
 let userWorkoutChoices = { gender: null, goal: null, level: null };
@@ -51,7 +52,7 @@ function attachEventListeners() {
     dom.treinosSection.addEventListener('click', (e) => {
         if (e.target.classList.contains('choice-btn')) {
             const { type, value } = e.target.dataset;
-            handleChoice(type, value);
+            handleChoice(type, value, e.target);
         }
         if (e.target.id === 'reset-workout-btn') {
             globalState.workoutPlan = { gender: null, goal: null, level: null };
@@ -98,6 +99,17 @@ function renderWorkoutPlan() {
             globalState.workoutPlan = { gender: null, goal: null, level: null };
             saveGlobalState();
             dom.workoutSetup.classList.remove('hidden');
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Ocorreu um erro ao carregar seu plano de treino. Por favor, selecione suas opções novamente.',
+                confirmButtonColor: 'var(--primary-color)',
+                customClass: {
+                    popup: 'themed-popup',
+                    title: 'themed-title',
+                    htmlContainer: 'themed-content'
+                }
+            });
             return;
         }
 
@@ -187,6 +199,7 @@ function renderDietOptions(goal) {
     dom.dietOptionsDisplay.classList.remove('hidden');
     
     let optionsHtml = `<h3>Ótima escolha! Agora, selecione uma das opções de dieta para ${goal.replace('-', ' ')}:</h3>`;
+    optionsHtml += `<div class="card-container">`
     for (const key in options) {
         const option = options[key];
         optionsHtml += `
@@ -197,6 +210,7 @@ function renderDietOptions(goal) {
             </div>
         `;
     }
+    optionsHtml += `</div>`
     dom.dietOptionsDisplay.innerHTML = optionsHtml;
 
     dom.dietOptionsDisplay.querySelectorAll('.select-diet-btn').forEach(btn => {
@@ -209,7 +223,16 @@ function renderDietOptions(goal) {
     });
 }
 
-function handleChoice(type, value) {
+function handleChoice(type, value, targetButton) {
+    // Visually mark the selected button
+    if (targetButton) {
+        const buttonGroup = targetButton.closest('.button-group');
+        if (buttonGroup) {
+            buttonGroup.querySelectorAll('.choice-btn').forEach(btn => btn.classList.remove('selected'));
+        }
+        targetButton.classList.add('selected');
+    }
+
     if (type === 'gender' || type === 'goal' || type === 'level') {
         userWorkoutChoices[type] = value;
         
