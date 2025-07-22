@@ -21,23 +21,25 @@ export function initPerformance() {
 function getTodayPerformanceLog() {
     const todayKey = new Date().toISOString().split('T')[0];
     if (!globalState.performance.log[todayKey]) {
-        globalState.performance.log[todayKey] = { habits: 0, workout: false, diet: false };
+        globalState.performance.log[todayKey] = { habits: 0, workout: false, dietPercentage: 0 };
     }
     return globalState.performance.log[todayKey];
 }
-    
+
 export function logPerformanceEvent(type, value = 1) {
     const todayLog = getTodayPerformanceLog();
 
     if (type === 'habits') {
-        todayLog.habits = document.querySelectorAll('.task-checkbox:checked').length;
+        todayLog.habits = document.querySelectorAll('#habitos-section .task-checkbox:checked').length;
     } else if (type === 'workout') {
-        todayLog.workout = true;
-    } else if (type === 'diet') {
-        todayLog.diet = true;
+        todayLog.workout = value; // value is boolean
+    } else if (type === 'dietPercentage') {
+        todayLog.dietPercentage = value; // value is percentage
     }
-    
-    updateStreak(true);
+
+    // Streak is now updated based on completing all habit tasks
+    // Or should it be based on any activity? Let's stick to habits for now.
+    // updateStreak(true);
     saveGlobalState();
 }
 
@@ -56,7 +58,7 @@ function updateStreak(isTaskCompleted) {
     if (perf.lastCompletedDate !== today) {
         const yesterday = new Date();
         yesterday.setDate(yesterday.getDate() - 1);
-        
+
         if (perf.lastCompletedDate === yesterday.toDateString()) {
             perf.streak++;
         } else {
@@ -64,7 +66,7 @@ function updateStreak(isTaskCompleted) {
         }
         perf.lastCompletedDate = today;
     }
-    
+
     checkAchievements();
     saveGlobalState();
 }
@@ -91,18 +93,18 @@ function checkAchievements() {
             const prevKey = i > 0 ? sortedKeys[i-1] : null;
             const monthData = monthlyTracking[key];
             const balance = monthData.income - monthData.expenses;
-            
+
             if (balance > 0) {
                 // Check if the previous month is consecutive
                 if (prevKey) {
                     const [year, month] = key.split('-').map(Number);
                     const [prevYear, prevMonth] = prevKey.split('-').map(Number);
-                    
+
                     const d = new Date(year, month - 1);
                     d.setMonth(d.getMonth() - 1);
-                    
+
                     if (d.getFullYear() === prevYear && (d.getMonth() + 1) === prevMonth) {
-                         consecutivePositiveMonths++;
+                        consecutivePositiveMonths++;
                     } else {
                         consecutivePositiveMonths = 1; // Reset if not consecutive
                     }
@@ -128,6 +130,13 @@ function checkAchievements() {
 
 export function updatePerformanceMetrics() {
     const perf = globalState.performance;
+    const totalHabitTasks = document.querySelectorAll('#habitos-section .task-checkbox').length;
+    const completedHabitTasks = document.querySelectorAll('#habitos-section .task-checkbox:checked').length;
+
+    // Update streak if all habits are done for the day
+    if (totalHabitTasks > 0 && completedHabitTasks === totalHabitTasks) {
+        updateStreak(true);
+    }
 
     const today = new Date();
     const lastDate = perf.lastCompletedDate ? new Date(perf.lastCompletedDate) : null;
@@ -142,9 +151,9 @@ export function updatePerformanceMetrics() {
 
     dom.streakDisplay.textContent = `${perf.streak} dia(s)`;
     dom.totalTasksDisplay.textContent = perf.totalHabitsCompleted;
-    
+
     renderPerformanceCharts();
-    
+
     dom.achievementsContainer.innerHTML = '';
     for(const key in achievementsList) {
         const achievement = achievementsList[key];
@@ -165,19 +174,19 @@ export function updatePerformanceMetrics() {
     const totalTasks = document.querySelectorAll('.task-checkbox').length;
     const completedTasks = document.querySelectorAll('.task-checkbox:checked').length;
     if (perf.streak > 2 || perf.totalHabitsCompleted > 20) {
-         dom.performanceMotivation.textContent = "Você está no caminho dos 1%! Continue executando.";
+        dom.performanceMotivation.textContent = "Você está no caminho dos 1%! Continue executando.";
     } else if (totalTasks > 0 && completedTasks === totalTasks) {
-         dom.performanceMotivation.textContent = "Parabéns, Executor! Você avançou 1% hoje. Continue firme.";
+        dom.performanceMotivation.textContent = "Parabéns, Executor! Você avançou 1% hoje. Continue firme.";
     } else if (completedTasks > 0) {
-         dom.performanceMotivation.textContent = "Continue assim, você está no caminho certo!";
+        dom.performanceMotivation.textContent = "Continue assim, você está no caminho certo!";
     } else {
-         dom.performanceMotivation.textContent = "Comece sua jornada! Complete uma tarefa.";
+        dom.performanceMotivation.textContent = "Comece sua jornada! Complete uma tarefa.";
     }
 }
-    
+
 function renderPerformanceCharts() {
     if (!dom.chartsContainer.querySelector('canvas')) {
-         dom.chartsContainer.innerHTML = `
+        dom.chartsContainer.innerHTML = `
             <div class="chart-wrapper">
                 <canvas id="categoryPieChart"></canvas>
             </div>
@@ -189,34 +198,44 @@ function renderPerformanceCharts() {
     const ctx = document.getElementById('categoryPieChart').getContext('2d');
     const log = globalState.performance.log || {};
 
-    let habitCount = 0, workoutCount = 0, dietCount = 0;
+    let habitDays = 0, workoutDays = 0, dietDays = 0;
+    let totalDietPercentage = 0;
 
     Object.values(log).forEach(day => {
-        if (day.habits > 0) habitCount++;
-        if (day.workout) workoutCount++;
-        if (day.diet) dietCount++;
+        if (day.habits > 0) habitDays++;
+        if (day.workout) workoutDays++;
+        if (day.dietPercentage > 0) {
+            dietDays++;
+            totalDietPercentage += day.dietPercentage;
+        }
     });
 
+    // Theme-aware chart colors
+    const isLightTheme = globalState.theme === 'light';
+    const pieBgColors = isLightTheme 
+        ? ['rgba(25, 118, 210, 0.7)', 'rgba(66, 165, 245, 0.7)', 'rgba(0, 137, 123, 0.7)'] 
+        : ['rgba(192, 160, 98, 0.7)', 'rgba(230, 210, 168, 0.7)', 'rgba(0, 128, 128, 0.7)'];
+    const pieBorderColors = isLightTheme
+        ? ['#1976D2', '#42A5F5', '#00897B']
+        : ['#C0A062', '#E6D2A8', '#008080'];
+    const textColor = isLightTheme ? '#212121' : 'white';
+
     const data = {
-        labels: ['Hábitos', 'Treinos', 'Dieta'],
+        labels: ['Dias com Hábitos', 'Dias de Treino', 'Dias de Dieta'],
         datasets: [{
             label: 'Distribuição de Foco',
-            data: [habitCount, workoutCount, dietCount],
-            backgroundColor: [
-                'rgba(192, 160, 98, 0.7)',
-                'rgba(230, 210, 168, 0.7)',
-                'rgba(0, 128, 128, 0.7)'
-            ],
-            borderColor: ['#C0A062', '#E6D2A8', '#008080'],
+            data: [habitDays, workoutDays, dietDays],
+            backgroundColor: pieBgColors,
+            borderColor: pieBorderColors,
             borderWidth: 1
         }]
     };
 
     if(categoryPieChart) categoryPieChart.destroy();
-    
-    if (habitCount === 0 && workoutCount === 0 && dietCount === 0) {
+
+    if (habitDays === 0 && workoutDays === 0 && dietDays === 0) {
         if(dom.chartsContainer) dom.chartsContainer.innerHTML = `<p class="empty-state">Complete tarefas, treinos e dietas para ver seus gráficos de desempenho aqui!</p>`;
-         return;
+        return;
     }
 
     categoryPieChart = new Chart(ctx, {
@@ -225,32 +244,45 @@ function renderPerformanceCharts() {
         options: {
             responsive: true,
             plugins: {
-                legend: { position: 'top', labels: { color: 'white' } },
-                title: { display: true, text: 'Distribuição de Atividades', color: 'white' }
+                legend: { position: 'top', labels: { color: textColor } },
+                title: { display: true, text: 'Distribuição de Atividades', color: textColor }
             }
         }
     });
-    
+
     const barsContainer = document.getElementById('category-bars-container');
     barsContainer.innerHTML = '';
-    const totalHabitsInRoutines = document.querySelectorAll('.task-checkbox').length;
-    const habitsPercent = totalHabitsInRoutines > 0 ? (globalState.performance.totalHabitsCompleted / (Object.keys(log).length * totalHabitsInRoutines) * 100).toFixed(0) : 0;
-    
+    const totalDaysWithLogs = Object.keys(log).length;
+
+    // Calculate total possible habit completions
+    const totalHabitsInRoutines = document.querySelectorAll('#habitos-section .task-checkbox').length;
+    let totalPossibleHabitCompletions = 0;
+    if (totalHabitsInRoutines > 0) {
+        // This is a rough estimate. A more accurate way would be to store total tasks per day.
+        totalPossibleHabitCompletions = totalDaysWithLogs * totalHabitsInRoutines;
+    }
+
+    const totalCompletedHabits = Object.values(log).reduce((sum, day) => sum + (day.habits || 0), 0);
+    const habitsPercent = totalPossibleHabitCompletions > 0 ? (totalCompletedHabits / totalPossibleHabitCompletions * 100) : 0;
+
+    const dietAdherencePercent = dietDays > 0 ? (totalDietPercentage / dietDays) : 0;
+
     const barsData = [
-        { label: 'Adesão aos Hábitos', value: habitsPercent, colorClass: 'green' },
-        { label: 'Dias de Treino', value: workoutCount, of: Object.keys(log).length },
-        { label: 'Dias de Dieta', value: dietCount, of: Object.keys(log).length },
+        { label: 'Adesão aos Hábitos (Geral)', value: habitsPercent.toFixed(0), text: `${habitsPercent.toFixed(0)}%`, type: 'percent' },
+        { label: 'Adesão à Dieta (Média)', value: dietAdherencePercent.toFixed(0), text: `${dietAdherencePercent.toFixed(0)}%`, type: 'percent' },
+        { label: 'Dias de Treino', value: workoutDays, of: totalDaysWithLogs, type: 'days' },
     ];
 
     barsData.forEach(item => {
         let percentage = item.value;
-        let text = `${item.value}%`;
-        if(item.of) {
+        let text = item.text;
+
+        if (item.type === 'days') {
             percentage = item.of > 0 ? (item.value / item.of * 100) : 0;
             text = `${item.value}/${item.of} dias`;
         }
-        
-        const colorClass = percentage > 80 ? 'green' : percentage > 50 ? 'orange' : 'red';
+
+        const colorClass = percentage >= 80 ? 'green' : percentage >= 50 ? 'orange' : 'red';
 
         const barEl = document.createElement('div');
         barEl.className = 'category-bar-item';

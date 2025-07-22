@@ -2,6 +2,7 @@ import { globalState, saveGlobalState } from './state.js';
 import { updatePerformanceMetrics } from './performance.js';
 import { loadFinanceData } from './finance.js';
 import { toggleRoutineLockState } from './habits.js';
+import { libraryContent } from './config.js';
 
 export let domElements = {};
 
@@ -12,6 +13,7 @@ export function initUI() {
         habitosSection: document.getElementById('habitos-section'),
         treinosSection: document.getElementById('treinos-section'),
         bibliotecaSection: document.getElementById('biblioteca-section'),
+        bibliotecaContentSection: document.getElementById('biblioteca-content-section'),
         financasSection: document.getElementById('financas-section'),
         comoUsarSection: document.getElementById('como-usar-section'),
         desempenhoSection: document.getElementById('desempenho-section'),
@@ -29,6 +31,7 @@ export function initUI() {
 
         // Back Buttons
         backButtons: document.querySelectorAll('.back-button'),
+        backButtonLibrary: document.querySelector('.back-button-library'),
 
         // Progress Bar Elements
         progressBar: document.getElementById('daily-progress-bar'),
@@ -37,12 +40,41 @@ export function initUI() {
 
         // Greeting Element
         greetingElement: document.getElementById('greeting'),
+
+        // Library content
+        libraryCategoriesContainer: document.getElementById('library-categories-container'),
+        libraryContentTitle: document.getElementById('library-content-title'),
+        libraryContentBody: document.getElementById('library-content-body'),
+        libraryContentAction: document.getElementById('library-content-action'),
+
+        // Theme Toggle
+        themeToggleButton: document.getElementById('theme-toggle-btn'),
     };
     domElements.sections = [
         domElements.homeSection, domElements.habitosSection, domElements.treinosSection,
         domElements.bibliotecaSection, domElements.financasSection, domElements.comoUsarSection,
-        domElements.desempenhoSection
+        domElements.desempenhoSection, domElements.bibliotecaContentSection
     ];
+
+    domElements.themeToggleButton.addEventListener('click', toggleTheme);
+}
+
+export function applyTheme() {
+    const theme = globalState.theme || 'dark';
+    document.body.dataset.theme = theme;
+    if (domElements.themeToggleButton) {
+        domElements.themeToggleButton.textContent = theme === 'dark' ? '☀️' : '🌙';
+    }
+}
+
+function toggleTheme() {
+    globalState.theme = globalState.theme === 'dark' ? 'light' : 'dark';
+    applyTheme();
+    saveGlobalState();
+    // Re-render charts with new theme colors if the performance section is active
+    if (domElements.desempenhoSection.classList.contains('active')) {
+        updatePerformanceMetrics();
+    }
 }
 
 export function showSection(sectionIdToShow) {
@@ -97,28 +129,59 @@ export function setGreeting() {
     domElements.greetingElement.textContent = greeting;
 }
 
+function showLibraryContent(category) {
+    showSection('biblioteca-content-section');
+    const content = libraryContent[category];
+
+    if (content) {
+        domElements.libraryContentTitle.innerHTML = content.title;
+        domElements.libraryContentBody.innerHTML = content.content;
+
+        let actionsHtml = '';
+        if (content.actions && content.actions.length > 0) {
+            content.actions.forEach(action => {
+                if (action.type === 'button') {
+                    actionsHtml += `<a href="${action.link}" target="_blank" rel="noopener noreferrer" class="library-action-button">${action.text}</a>`;
+                } else if (action.type === 'text') {
+                    actionsHtml += `<div class="library-action-text">${action.content}</div>`;
+                }
+            });
+        }
+        domElements.libraryContentAction.innerHTML = actionsHtml;
+
+    } else {
+        domElements.libraryContentTitle.textContent = 'Em breve';
+        domElements.libraryContentBody.innerHTML = '<p>Este conteúdo está sendo preparado e estará disponível em breve. Continue focado em suas metas diárias!</p>';
+        domElements.libraryContentAction.innerHTML = '';
+    }
+}
+
 export function updateProgress() {
-    const completedTasks = document.querySelectorAll('.task-checkbox:checked').length;
-    const totalTasks = document.querySelectorAll('.task-checkbox').length;
+    const completedHabitTasks = document.querySelectorAll('#habitos-section .task-checkbox:checked').length;
+    const totalHabitTasks = document.querySelectorAll('#habitos-section .task-checkbox').length;
+    
+    // This is a proxy for daily progress, can be enhanced later
+    const allTasks = totalHabitTasks;
+    const completedTasks = completedHabitTasks;
     
     const progressContainer = document.querySelector('.progress-container');
 
-    if (totalTasks === 0) {
+    if (allTasks === 0) {
         if (progressContainer) progressContainer.style.display = 'none';
-        if (domElements.progressMotivation) domElements.progressMotivation.textContent = "Adicione tarefas nas suas rotinas para começar sua jornada 1% melhor por dia.";
+        if (domElements.progressMotivation) domElements.progressMotivation.textContent = "Adicione tarefas em 'Hábitos e Rotinas' para começar sua jornada.";
         return;
     }
 
     if (progressContainer) progressContainer.style.display = 'flex';
 
-    const progressPercentage = (completedTasks / totalTasks) * 100;
+    const progressPercentage = (completedTasks / allTasks) * 100;
 
     if (domElements.progressBar) {
          domElements.progressBar.style.width = `${progressPercentage}%`;
     }
    
     if (domElements.progressText) {
-        domElements.progressText.textContent = `${completedTasks}/${totalTasks}`;
+        domElements.progressText.textContent = `${completedTasks}/${allTasks}`;
     }
     
     if (domElements.progressMotivation) {
@@ -200,5 +263,19 @@ export function setupNavigation() {
 
     if (domElements.guideActionBtn) {
         domElements.guideActionBtn.addEventListener('click', () => showSection('home-section'));
+    }
+
+    if (domElements.libraryCategoriesContainer) {
+        domElements.libraryCategoriesContainer.addEventListener('click', (e) => {
+            const card = e.target.closest('.library-category-card');
+            if (card) {
+                const category = card.dataset.category;
+                showLibraryContent(category);
+            }
+        });
+    }
+
+    if (domElements.backButtonLibrary) {
+        domElements.backButtonLibrary.addEventListener('click', () => showSection('biblioteca-section'));
     }
 }

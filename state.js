@@ -2,6 +2,7 @@ export let globalState = {};
 
 export const defaultGlobalState = {
     userName: null,
+    theme: 'dark', // 'dark' or 'light'
     lastVisitDate: null,
     userHabits: null, 
     isRoutineFinalized: false,
@@ -15,8 +16,8 @@ export const defaultGlobalState = {
         monthlyTracking: {},
         lastArchiveDate: null,
     },
-    workoutPlan: { gender: null, goal: null },
-    dietPlan: { goal: null },
+    workoutPlan: { gender: null, goal: null, level: null },
+    dietPlan: { goal: null, option: null, checkedMeals: {} },
     performance: {
         log: {}, 
         streak: 0,
@@ -48,20 +49,26 @@ export function loadGlobalState() {
         }
     }
 
+    // Set default state first
+    globalState = JSON.parse(JSON.stringify(defaultGlobalState));
+
+    // Deep merge saved state into default state
     const deepMerge = (target, source) => {
         for (const key in source) {
             if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
                 if (!target[key]) Object.assign(target, { [key]: {} });
                 deepMerge(target[key], source[key]);
-            } else {
-                if (source.hasOwnProperty(key)) {
-                     target[key] = source[key];
+            } else if (source.hasOwnProperty(key)) {
+                // Only assign if the property exists in the source, to avoid overwriting with undefined
+                if (source[key] !== undefined) {
+                    target[key] = source[key];
                 }
             }
         }
-         return target;
+        return target;
     };
     
-    globalState = JSON.parse(JSON.stringify(defaultGlobalState));
     deepMerge(globalState, savedState);
+
+    // Daily Reset Logic is now handled on DOMContentLoaded in script.js to ensure state is fully loaded
 }

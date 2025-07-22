@@ -12,8 +12,11 @@
 
     <header>
         <img src="upscalemedia-transformed.png" alt="Logo Sou 1%" class="logo">
-        <h1>Sou 1%</h1>
-        <p id="greeting">Seu assistente para o desenvolvimento pessoal</p>
+        <div class="header-content">
+            <h1>Sou 1%</h1>
+            <p id="greeting">Seu assistente para o desenvolvimento pessoal</p>
+        </div>
+        <button id="theme-toggle-btn" class="theme-toggle">🌙</button>
     </header>
 
     <main>
@@ -35,27 +38,27 @@
             </div>
             <div class="menu-container">
                 <div class="menu-card" id="go-habitos">
-                    <img src="icon-habit.png" alt="Ícone de Hábitos e Rotinas" class="menu-icon">
+                    <img src="/lista-de-tarefas.png" alt="Ícone de Hábitos e Rotinas" class="menu-icon">
                     <h3>Hábitos e Rotinas</h3>
                 </div>
                 <div class="menu-card" id="go-biblioteca">
-                    <img src="icon-library.png" alt="Ícone de Biblioteca" class="menu-icon">
+                    <img src="biblioteca.png" alt="Ícone de Biblioteca" class="menu-icon">
                     <h3>Biblioteca</h3>
                 </div>
                 <div class="menu-card" id="go-treinos">
-                    <img src="icon-workout.png" alt="Ícone de Treinos e Dietas" class="menu-icon">
+                    <img src="estilo-de-vida.png" alt="Ícone de Treinos e Dietas" class="menu-icon">
                     <h3>Treinos e Dietas</h3>
                 </div>
                 <div class="menu-card" id="go-financas">
-                    <img src="icon-finance.png" alt="Ícone de Finanças" class="menu-icon">
+                    <img src="bolsa-de-dinheiro.png" alt="Ícone de Finanças" class="menu-icon">
                     <h3>Finanças</h3>
                 </div>
                 <div class="menu-card" id="go-desempenho">
-                    <img src="icon-performance.png" alt="Ícone de Meu Desempenho" class="menu-icon">
+                    <img src="grafico-de-pizza.png" alt="Ícone de Meu Desempenho" class="menu-icon">
                     <h3>Meu Desempenho</h3>
                 </div>
                 <div class="menu-card" id="go-como-usar">
-                    <img src="icon-guide.png" alt="Ícone de Como Usar o App" class="menu-icon">
+                    <img src="pergunta.png" alt="Ícone de Como Usar o App" class="menu-icon">
                     <h3>Como Usar o App</h3>
                 </div>
             </div>
@@ -63,7 +66,7 @@
 
         <section id="habitos-section">
             <button class="back-button">&larr; Voltar ao Menu</button>
-            <h2><img src="icon-habit.png" alt="" class="section-icon"> Hábitos e Rotinas</h2>
+            <h2><img src="/lista-de-tarefas.png" alt="" class="section-icon"> Hábitos e Rotinas</h2>
 
             <div class="promo-text" id="promo-link-biblioteca">
                 <p>Se você ainda não sabe por onde começar, acesse a biblioteca e garanta o seu manual completo e totalmente gratuito sobre hábitos e rotinas.</p>
@@ -87,22 +90,30 @@
         <section id="treinos-section">
             <button class="back-button">&larr; Voltar ao Menu</button>
             <div id="workout-container">
-                <h2><img src="icon-workout.png" alt="" class="section-icon"> Meu Plano de Treinos</h2>
+                <h2><img src="estilo-de-vida.png" alt="" class="section-icon"> Meu Plano de Treinos</h2>
                 <div id="workout-setup" class="setup-container">
                     <h3>Vamos montar seu plano de treinos!</h3>
-                    <p>Responda duas perguntas rápidas para personalizar sua rotina.</p>
-                    <div class="setup-question">
+                    <p>Responda as perguntas para personalizar sua rotina.</p>
+                    <div class="setup-question" data-question="gender">
                         <label>1. Qual seu sexo?</label>
                         <div class="button-group">
                             <button class="choice-btn" data-type="gender" data-value="masculino">Masculino</button>
                             <button class="choice-btn" data-type="gender" data-value="feminino">Feminino</button>
                         </div>
                     </div>
-                    <div class="setup-question hidden">
+                    <div class="setup-question hidden" data-question="goal">
                         <label>2. Qual seu objetivo principal?</label>
                         <div class="button-group">
                             <button class="choice-btn" data-type="goal" data-value="ganhar-massa">Ganhar Massa</button>
                             <button class="choice-btn" data-type="goal" data-value="perder-peso">Perder Peso</button>
+                        </div>
+                    </div>
+                     <div class="setup-question hidden" data-question="level">
+                        <label>3. Qual seu nível de treino?</label>
+                        <div class="button-group">
+                            <button class="choice-btn" data-type="level" data-value="iniciante">Iniciante (ABC)</button>
+                            <button class="choice-btn" data-type="level" data-value="intermediario">Intermediário (ABCD)</button>
+                            <button class="choice-btn" data-type="level" data-value="avancado">Avançado (ABCDE)</button>
                         </div>
                     </div>
                 </div>
@@ -118,20 +129,24 @@
             <div id="diet-container">
                 <h2><img src="icon-diet.png" alt="" class="section-icon"> Meu Plano Alimentar</h2>
                 <div id="diet-setup" class="setup-container">
-                    <h3>Agora, vamos ao seu plano alimentar.</h3>
+                    <h3>Vamos montar seu plano alimentar!</h3>
                     <p>Qual é o seu objetivo?</p>
                      <div class="setup-question">
                         <div class="button-group">
-                            <button class="choice-btn" data-type="diet-goal" data-value="ganhar-peso">Ganhar Peso</button>
                             <button class="choice-btn" data-type="diet-goal" data-value="perder-peso">Perder Peso</button>
+                            <button class="choice-btn" data-type="diet-goal" data-value="manter-peso">Manter Peso</button>
+                            <button class="choice-btn" data-type="diet-goal" data-value="ganhar-peso">Ganhar Peso</button>
                         </div>
                     </div>
+                </div>
+                <div id="diet-options-display" class="hidden">
+                    <!-- Diet options will be displayed here -->
                 </div>
                  <div id="diet-plan-display" class="hidden">
                     <!-- Diet plan will be displayed here -->
                 </div>
                 <div id="diet-actions" class="workout-actions hidden">
-                    <button id="log-diet-btn">✅ Segui o plano alimentar hoje</button>
+                    <button id="log-diet-btn" class="hidden">✅ Segui o plano alimentar hoje</button>
                     <p id="diet-logged-today" class="hidden">Você já registrou sua adesão à dieta hoje!</p>
                 </div>
             </div>
@@ -139,15 +154,15 @@
 
         <section id="biblioteca-section">
             <button class="back-button">&larr; Voltar ao Menu</button>
-            <h2><img src="icon-library.png" alt="" class="section-icon"> Biblioteca</h2>
+            <h2><img src="biblioteca.png" alt="" class="section-icon"> Biblioteca</h2>
             <div class="card-container" id="library-categories-container">
                  <div class="library-category-card" data-category="manual">
-                    <img src="icon-guide.png" alt="Ícone Manual" class="library-category-icon">
+                    <img src="/WhatsApp Image 2025-07-22 at 07.35.12.jpeg" alt="Ícone Manual" class="library-category-icon">
                     <h3>📘 Manual Completo</h3>
                     <p>Guias essenciais para começar sua jornada.</p>
                 </div>
                 <div class="library-category-card" data-category="habitos">
-                    <img src="icon-habit.png" alt="Ícone Hábitos" class="library-category-icon">
+                    <img src="/lista-de-tarefas.png" alt="Ícone Hábitos" class="library-category-icon">
                     <h3>⏰ Hábitos e Rotinas</h3>
                     <p>Estratégias para construir hábitos vencedores.</p>
                 </div>
@@ -157,21 +172,30 @@
                     <p>Conteúdos para vencer a procrastinação.</p>
                 </div>
                 <div class="library-category-card" data-category="financas">
-                    <img src="icon-finance.png" alt="Ícone Finanças" class="library-category-icon">
+                    <img src="bolsa-de-dinheiro.png" alt="Ícone Finanças" class="library-category-icon">
                     <h3>💰 Gestão Financeira</h3>
                     <p>Organize suas finanças e invista no futuro.</p>
                 </div>
                  <div class="library-category-card" data-category="treinos">
-                    <img src="icon-workout.png" alt="Ícone Treinos" class="library-category-icon">
+                    <img src="estilo-de-vida.png" alt="Ícone Treinos" class="library-category-icon">
                     <h3>🏋️ Treinos e Dietas</h3>
                     <p>Planejamento corporal e vida saudável.</p>
                 </div>
             </div>
         </section>
 
+        <section id="biblioteca-content-section">
+            <button class="back-button-library">&larr; Voltar à Biblioteca</button>
+            <div class="card" id="library-content-card">
+                <h2 id="library-content-title"></h2>
+                <div id="library-content-body" class="library-content-body"></div>
+                <div id="library-content-action"></div>
+            </div>
+        </section>
+
         <section id="financas-section">
             <button class="back-button">&larr; Voltar ao Menu</button>
-            <h2><img src="icon-finance.png" alt="" class="section-icon"> Finanças</h2>
+            <h2><img src="bolsa-de-dinheiro.png" alt="" class="section-icon"> Finanças</h2>
 
             <div class="promo-text" id="promo-link-biblioteca-financas">
                 <p>Se você ainda não sabe por onde começar, acesse a biblioteca e garanta o seu manual completo e totalmente gratuito sobre gestão financeira.</p>
@@ -265,8 +289,11 @@
                 <!-- Seção 4: Acompanhamento Mensal -->
                 <div class="card finance-card" id="monthly-tracking-card">
                     <h3>📆 Acompanhamento Mensal</h3>
-                    <p class="guide-text">Ao final de um período (ex: um mês), clique no botão abaixo para salvar um registro do seu desempenho financeiro no histórico.</p>
-                    <button id="archive-month-btn" class="action-btn">Arquivar Desempenho Atual</button>
+                    <p class="guide-text">Ao final de um período (ex: um mês), clique abaixo para arquivar um registro do seu desempenho financeiro no histórico. Você também pode adicionar registros de meses anteriores manualmente.</p>
+                    <div class="monthly-actions">
+                        <button id="archive-month-btn" class="action-btn">Arquivar Desempenho Atual</button>
+                        <button id="add-previous-month-btn" class="action-btn secondary-action-btn">+ Adicionar Mês Anterior</button>
+                    </div>
                     <div id="archive-month-form-container" class="hidden">
                         <!-- Form will be injected here -->
                     </div>
@@ -280,7 +307,7 @@
 
         <section id="desempenho-section">
             <button class="back-button">&larr; Voltar ao Menu</button>
-            <h2><img src="icon-performance.png" alt="" class="section-icon"> Meu Desempenho</h2>
+            <h2><img src="grafico-de-pizza.png" alt="" class="section-icon"> Meu Desempenho</h2>
             <div class="card-container">
                 <div class="card performance-card">
                     <h3>🔥 Sequência de Dias</h3>
@@ -317,46 +344,46 @@
 
         <section id="como-usar-section">
             <button class="back-button">&larr; Voltar ao Menu</button>
-            <h2><img src="icon-guide.png" alt="" class="section-icon"> Como Usar o App</h2>
+            <h2><img src="pergunta.png" alt="" class="section-icon"> Como Usar o App</h2>
             <div class="card-container">
                 <div class="card">
                     <h3>Seu Guia para o Sucesso</h3>
                     <p>Este aplicativo foi projetado para ser seu parceiro na jornada de desenvolvimento pessoal. Veja como cada parte funciona:</p>
                     <ul class="guide-list">
                         <li>
-                            <strong>1. Tela Inicial e Progresso Diário</strong>
-                            <p>Sua tela de comando. Aqui você vê sua barra de progresso do dia baseada nas tarefas que você mesmo configurou em "Hábitos e Rotinas". Cada tarefa concluída aumenta sua barra. Ao chegar em 100%, você recebe uma mensagem de execução.</p>
+                            <strong>1. Tela Inicial: Seu Comando Diário</strong>
+                            <p>Sua central de comando. Defina suas metas em "Hábitos e Rotinas" e veja sua barra de progresso avançar a cada tarefa concluída. Chegar a 100% é a sua vitória do dia.</p>
                         </li>
                         <li>
-                            <strong>2. Hábitos e Rotinas</strong>
-                            <p>Onde você cria sua rotina personalizada dividida em: Rotina Matinal, Desenvolvimento Profissional e Rotina Noturna. Você pode adicionar, editar e excluir tarefas. Ao finalizar sua rotina, ela será reiniciada automaticamente todos os dias para ser executada e alimentar seu progresso diário.</p>
+                            <strong>2. Hábitos e Rotinas: Construa Seu Sistema</strong>
+                            <p>O coração do seu progresso. Monte suas rotinas matinal, profissional e noturna. Uma vez definida, ela é reiniciada a cada dia, pronta para ser conquistada novamente e alimentar seu desempenho.</p>
                         </li>
                         <li>
-                            <strong>3. Meu Desempenho</strong>
-                            <p>Aqui você acompanha sua evolução total. O app mede tudo e mostra: dias com rotina concluída, total de tarefas, consistência (dias seguidos), gráficos por categoria e conquistas desbloqueadas. Você pode ver seu nível e até compartilhar sua evolução.</p>
+                            <strong>3. Meu Desempenho: Seu Histórico de Vitórias</strong>
+                            <p>Veja o resultado do seu esforço. Acompanhe sua consistência (dias seguidos), total de tarefas, gráficos de evolução e as medalhas que você desbloqueou no campo de batalha.</p>
                         </li>
                         <li>
-                            <strong>4. Gestão Financeira</strong>
-                            <p>Organize sua vida financeira: informe sua renda, adicione gastos, veja seu saldo, defina metas de economia e cadastre conquistas (ex: "Comprar notebook") para acompanhar seu progresso.</p>
+                            <strong>4. Finanças: Organize Seu Território</strong>
+                            <p>Controle sua renda, registre gastos e veja seu saldo. Defina metas de economia e acompanhe o progresso para suas próximas grandes conquistas, como uma viagem ou um novo equipamento.</p>
                         </li>
                         <li>
-                            <strong>5. Treinos e Dietas</strong>
-                            <p>Sistema para evoluir fisicamente. Defina seu sexo e objetivo para receber um treino ABC personalizado. Na parte de Dietas, escolha seu objetivo e receba um plano de 4 refeições. Seu histórico alimenta seu desempenho.</p>
+                            <strong>5. Treinos e Dietas: Forje Seu Corpo</strong>
+                            <p>Receba planos de treino e dieta personalizados com base em seu sexo e objetivo. Marque suas atividades diárias e veja seu físico e sua disciplina evoluírem juntos.</p>
                         </li>
                         <li>
-                            <strong>6. Biblioteca</strong>
-                            <p>Conteúdos para sua evolução mental, organizados por temas como Manual Completo, Hábitos, Disciplina, Finanças e Treinos, com áudios, PDFs e textos práticos.</p>
+                            <strong>6. Biblioteca: Afie Sua Mente</strong>
+                            <p>Acesse conteúdos práticos e diretos sobre hábitos, disciplina, finanças e mais. São manuais e guias para acelerar sua jornada e te dar o conhecimento necessário para vencer.</p>
                         </li>
                          <li>
-                            <strong>7. Como Tudo se Conecta</strong>
-                            <p>Cada tarefa concluída em hábitos, treinos, finanças ou dieta, alimenta sua barra de progresso diário e sua área de desempenho. Quanto mais você executa, mais conquista medalhas e sobe de nível.</p>
+                            <strong>7. O Ciclo da Execução</strong>
+                            <p>Tudo está conectado. Cada hábito, treino ou meta financeira concluída impulsiona seu progresso diário e desbloqueia conquistas em "Meu Desempenho". A execução constante te torna mais forte.</p>
                         </li>
                          <li>
-                            <strong>Extras</strong>
-                            <p>Seus dados são salvos localmente no seu dispositivo. Cada usuário personaliza e controla tudo de forma privada. Você pode redefinir sua rotina a qualquer momento. Tudo é gamificado para manter você motivado e em movimento.</p>
+                            <strong>8. Sua Jornada, Suas Regras</strong>
+                            <p>Seus dados são 100% privados e salvos no seu dispositivo. Você tem total controle para personalizar, ajustar e redefinir suas rotinas quando quiser. O app é seu, a jornada é sua.</p>
                         </li>
                     </ul>
-                    <button id="guide-action-btn">Agora que você entendeu tudo, é hora de executar.</button>
+                    <button id="guide-action-btn" class="guide-action-button">Entendido. É hora de executar.</button>
                 </div>
             </div>
         </section>

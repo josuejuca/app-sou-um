@@ -38,11 +38,22 @@ export function initFinance() {
         newAchievementBtn: document.getElementById('new-achievement-btn'),
         monthlyTrackingList: document.getElementById('monthly-tracking-list'),
         archiveMonthBtn: document.getElementById('archive-month-btn'),
+        addPreviousMonthBtn: document.getElementById('add-previous-month-btn'),
         archiveMonthFormContainer: document.getElementById('archive-month-form-container'),
     };
     
     attachEventListeners();
     loadFinanceData();
+}
+
+function showArchiveButtons(shouldShow) {
+    if (shouldShow) {
+        dom.archiveMonthBtn.classList.remove('hidden');
+        dom.addPreviousMonthBtn.classList.remove('hidden');
+    } else {
+        dom.archiveMonthBtn.classList.add('hidden');
+        dom.addPreviousMonthBtn.classList.add('hidden');
+    }
 }
 
 function attachEventListeners() {
@@ -157,7 +168,7 @@ function attachEventListeners() {
         
         dom.archiveMonthFormContainer.innerHTML = generateMonthRecordForm(recordData);
         dom.archiveMonthFormContainer.classList.remove('hidden');
-        dom.archiveMonthBtn.classList.add('hidden');
+        showArchiveButtons(false);
         
         // Attach listener for the newly created form
         const form = dom.archiveMonthFormContainer.querySelector('.edit-month-form');
@@ -168,7 +179,39 @@ function attachEventListeners() {
             if(e.target.classList.contains('cancel-edit-btn')) {
                 dom.archiveMonthFormContainer.innerHTML = '';
                 dom.archiveMonthFormContainer.classList.add('hidden');
-                dom.archiveMonthBtn.classList.remove('hidden');
+                showArchiveButtons(true);
+            }
+        });
+    });
+
+    dom.addPreviousMonthBtn.addEventListener('click', () => {
+        const lastMonthDate = new Date();
+        lastMonthDate.setMonth(lastMonthDate.getMonth() - 1);
+        const year = lastMonthDate.getFullYear();
+        const month = lastMonthDate.getMonth() + 1;
+
+        const recordData = {
+            year,
+            month,
+            data: { income: 0, expenses: 0 }, // Blank data for manual entry
+            isNew: true,
+            key: `new-${Date.now()}`
+        };
+
+        dom.archiveMonthFormContainer.innerHTML = generateMonthRecordForm(recordData);
+        dom.archiveMonthFormContainer.classList.remove('hidden');
+        showArchiveButtons(false);
+        
+        // Attach listener for the newly created form
+        const form = dom.archiveMonthFormContainer.querySelector('.edit-month-form');
+        form.addEventListener('click', (e) => {
+            if(e.target.classList.contains('save-month-btn')) {
+                handleSaveMonth(form, true);
+            }
+            if(e.target.classList.contains('cancel-edit-btn')) {
+                dom.archiveMonthFormContainer.innerHTML = '';
+                dom.archiveMonthFormContainer.classList.add('hidden');
+                showArchiveButtons(true);
             }
         });
     });
@@ -231,6 +274,7 @@ function handleSaveMonth(formEl, isNewFromArchive, originalKey = null) {
     if (newBalance > 0 && !financeData.monthlyTracking[newKey]) {
         if (!globalState.performance.achievements['saldo-positivo']) {
             globalState.performance.achievements['saldo-positivo'] = new Date().toISOString().split('T')[0];
+            logAchievementCompletion('Saldo Positivo', 'saldo-positivo');
         }
     }
 
@@ -245,7 +289,7 @@ function handleSaveMonth(formEl, isNewFromArchive, originalKey = null) {
         }
         dom.archiveMonthFormContainer.innerHTML = '';
         dom.archiveMonthFormContainer.classList.add('hidden');
-        dom.archiveMonthBtn.classList.remove('hidden');
+        showArchiveButtons(true);
     }
     
     saveFinanceData();
@@ -366,7 +410,7 @@ function updateAchievementUI() {
     if (remaining === 0 && ach.needed > 0 && !alreadyAchieved) {
         dom.achievementComplete.classList.remove('hidden');
         dom.editAchievementBtn.classList.add('hidden');
-        logAchievementCompletion();
+        logAchievementCompletion('Blindagem Financeira', 'blindagem-financeira');
     } else {
         dom.achievementComplete.classList.add('hidden');
         dom.editAchievementBtn.classList.remove('hidden');
@@ -410,7 +454,7 @@ function updateMonthlyTrackingUI() {
     // Hide archive form and show button by default
     dom.archiveMonthFormContainer.innerHTML = '';
     dom.archiveMonthFormContainer.classList.add('hidden');
-    dom.archiveMonthBtn.classList.remove('hidden');
+    showArchiveButtons(true);
 
     // Display Historical Data
     dom.monthlyTrackingList.innerHTML = '';
